@@ -66,7 +66,33 @@ docker-compose logs -f
 
 访问 http://localhost:8080 查看面板
 
-### 手动部署
+### 单文件部署（前端嵌入）
+
+后端二进制文件内嵌前端资源，只需一个可执行文件即可运行完整服务。
+
+#### Windows
+
+```powershell
+# 构建
+.\scripts\build.ps1
+
+# 运行
+$env:API_KEY="your-secret-key"
+$env:ALLOWED_GROUPS="123456789,987654321"
+.\seekyourguild.exe
+```
+
+#### Linux / macOS
+
+```bash
+# 构建
+./scripts/build.sh
+
+# 运行
+API_KEY="your-secret-key" ALLOWED_GROUPS="123456789,987654321" ./seekyourguild
+```
+
+### 分离开发模式
 
 #### 后端
 
@@ -80,7 +106,7 @@ go mod download
 export API_KEY="your-secret-key"
 export ALLOWED_GROUPS="123456789,987654321"
 
-# 运行
+# 运行（无前端资源时只提供 API）
 go run ./cmd/server/
 ```
 
@@ -92,7 +118,7 @@ cd frontend
 # 安装依赖
 yarn install
 
-# 开发模式
+# 开发模式（连接后端 API）
 yarn dev
 
 # 构建生产版本
@@ -215,7 +241,8 @@ seekyourguild/
 │   │   ├── database/        # 数据库
 │   │   ├── handlers/        # API 处理器
 │   │   ├── middleware/      # 中间件
-│   │   └── models/          # 数据模型
+│   │   ├── models/          # 数据模型
+│   │   └── static/          # 嵌入的前端资源
 │   └── go.mod
 ├── frontend/                # Vue 前端
 │   ├── src/
@@ -224,6 +251,9 @@ seekyourguild/
 │   │   ├── stores/          # Pinia Store
 │   │   └── views/           # 页面
 │   └── package.json
+├── scripts/                 # 构建脚本
+│   ├── build.sh             # Linux/macOS
+│   └── build.ps1            # Windows
 ├── .github/workflows/       # CI/CD
 ├── Dockerfile
 ├── docker-compose.yml

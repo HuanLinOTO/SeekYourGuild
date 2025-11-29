@@ -3,11 +3,14 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
+	"strings"
 
 	"seekyourguild/internal/config"
 	"seekyourguild/internal/database"
 	"seekyourguild/internal/handlers"
 	"seekyourguild/internal/middleware"
+	"seekyourguild/internal/static"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -57,6 +60,59 @@ func main() {
 			stats.GET("/messages", handlers.GetMessageStats)
 			stats.GET("/active-users", handlers.GetActiveUsers)
 		}
+	}
+
+	// 静态文件服务（前端）
+	if static.HasStaticFiles() {
+		log.Println("Serving embedded static files")
+		
+		// 托管静态资源文件
+		r.GET("/assets/*filepath", func(c *gin.Context) {
+			filePath := strings.TrimPrefix(c.Request.URL.Path, "/")
+			data, contentType, err := static.ReadFile(filePath)
+			if err != nil {
+				c.Status(http.StatusNotFound)
+				return
+			}
+			c.Data(http.StatusOK, contentType, data)
+		})
+		
+		// 根路径直接返回 index.html
+		r.GET("/", func(c *gin.Context) {
+			data, contentType, err := static.ReadFile("index.html")
+			if err != nil {
+				c.String(http.StatusInternalServerError, "index.html not found")
+				return
+			}
+			c.Data(http.StatusOK, contentType, data)
+		})
+		
+		// 处理其他路由 - SPA fallback
+		r.NoRoute(func(c *gin.Context) {
+			// API 路由返回 404
+			if strings.HasPrefix(c.Request.URL.Path, "/api") {
+				c.JSON(http.StatusNotFound, gin.H{
+					"code":    404,
+					"message": "API not found",
+				})
+				return
+			}
+			
+			// 尝试提供静态文件
+			path := strings.TrimPrefix(c.Request.URL.Path, "/")
+			
+			// 检查文件是否存在
+			if data, contentType, err := static.ReadFile(path); err == nil {
+				c.Data(http.StatusOK, contentType, data)
+				return
+			}
+			
+			// SPA fallback - 返回 index.html
+			data, contentType, _ := static.ReadFile("index.html")
+			c.Data(http.StatusOK, contentType, data)
+		})
+	} else {
+		log.Println("No embedded static files found, running in API-only mode")
 	}
 
 	// 启动服务器
