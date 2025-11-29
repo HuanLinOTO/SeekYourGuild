@@ -18,9 +18,6 @@ FROM golang:1.21-alpine AS backend-builder
 
 WORKDIR /app
 
-# 安装依赖
-RUN apk add --no-cache gcc musl-dev
-
 # 复制依赖文件
 COPY backend/go.mod backend/go.sum ./
 RUN go mod download
@@ -31,8 +28,8 @@ COPY backend/ ./
 # 复制前端构建产物到静态目录
 COPY --from=frontend-builder /app/dist ./internal/static/dist
 
-# 构建后端（包含嵌入的前端）
-RUN CGO_ENABLED=1 go build -ldflags="-s -w" -o /server ./cmd/server/
+# 构建后端（纯 Go，无需 CGO）
+RUN CGO_ENABLED=0 go build -ldflags="-s -w" -o /server ./cmd/server/
 
 # 阶段3: 最终镜像
 FROM alpine:3.19
