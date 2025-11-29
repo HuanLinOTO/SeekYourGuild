@@ -1,0 +1,64 @@
+# 多阶段构建
+
+# 阶段1: 构建后端
+FROM golang:1.21-alpine AS backend-builder
+
+WORKDIR /app
+
+# 安装依赖
+RUN apk add --no-cache gcc musl-dev
+
+# 复制依赖文件
+COPY backend/go.mod backend/go.sum ./
+RUN go mod download
+
+# 复制源码并构建
+COPY backend/ ./
+RUN CGO_ENABLED=1 go build -ldflags="-s -w" -o /server ./cmd/server/
+
+# 阶段2: 构建前端
+FROM node:20-alpine AS frontend-builder
+
+WORKDIR /app
+
+# 复制依赖文件
+COPY frontend/package.json frontend/yarn.lock ./
+RUN yarn install --frozen-lockfile
+
+# 复制源码并构建
+COPY frontend/ ./
+RUN yarn build
+
+# 阶段3: 最终镜像
+FROM alpine:3.19
+
+WORKDIR /app
+
+# 安装运行时依赖
+RUN apk add --no-cache ca-certificates tzdata
+
+# 从构建阶段复制文件
+COPY --from=backend-builder /server ./server
+COPY --from=frontend-builder /app/dist ./static
+
+# 设置时区
+ENV TZ=Asia/Shanghai
+
+# 环境变量
+ENV SERVER_HOST=0.0.0.0
+ENV SERVER_PORT=8080
+ENV DB_DRIVER=sqlite
+ENV DB_DSN=file:/data/seekyourguild.db?cache=shared&mode=rwc
+
+# 创建数据目录
+RUN mkdir -p /data
+
+# 暴露端口
+EXPOSE 8080
+
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:8080/api/groups || exit 1
+
+# 启动命令
+CMD ["./server"]
