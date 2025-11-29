@@ -43,7 +43,7 @@
 mkdir -p /opt/seekyourguild && cd /opt/seekyourguild
 
 # 下载 docker-compose.yml
-wget https://raw.githubusercontent.com/yourname/seekyourguild/main/docker-compose.yml
+wget https://raw.githubusercontent.com/HuanLinOTO/SeekYourGuild/main/docker-compose.yml
 ```
 
 2. **创建环境变量文件**
@@ -83,7 +83,7 @@ docker run -d \
   -v /opt/seekyourguild/data:/data \
   -e API_KEY=sk-your-secret-key \
   -e ALLOWED_GROUPS=123456789,987654321 \
-  ghcr.io/yourname/seekyourguild:latest
+  ghcr.io/huanlinoto/seekyourguild:latest
 ```
 
 ### 更新
@@ -104,7 +104,7 @@ docker-compose up -d
 
 **下载预编译二进制**
 
-从 [Releases](https://github.com/yourname/seekyourguild/releases) 下载对应平台的二进制文件：
+从 [Releases](https://github.com/HuanLinOTO/SeekYourGuild/releases) 下载对应平台的二进制文件：
 
 - `seekyourguild-linux-amd64` - Linux x64
 - `seekyourguild-linux-arm64` - Linux ARM64
@@ -116,7 +116,7 @@ docker-compose up -d
 
 ```bash
 # 下载
-wget https://github.com/yourname/seekyourguild/releases/latest/download/seekyourguild-linux-amd64
+wget https://github.com/HuanLinOTO/SeekYourGuild/releases/latest/download/seekyourguild-linux-amd64
 chmod +x seekyourguild-linux-amd64
 
 # 创建配置
@@ -169,7 +169,7 @@ sudo systemctl status seekyourguild
 
 ```bash
 # 下载前端构建产物
-wget https://github.com/yourname/seekyourguild/releases/latest/download/frontend-dist.zip
+wget https://github.com/HuanLinOTO/SeekYourGuild/releases/latest/download/frontend-dist.zip
 unzip frontend-dist.zip -d /var/www/seekyourguild
 
 # 使用 Nginx 托管
@@ -369,4 +369,4 @@ curl http://localhost:8080/api/groups
 
 ---
 
-如有问题，请提交 [Issue](https://github.com/yourname/seekyourguild/issues)。
+如有问题，请提交 [Issue](https://github.com/HuanLinOTO/SeekYourGuild/issues)。

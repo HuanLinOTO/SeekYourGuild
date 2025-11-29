@@ -11,7 +11,7 @@
 [![Go](https://img.shields.io/badge/Go-1.21+-00ADD8?style=flat-square&logo=go)](https://go.dev/)
 [![Vue](https://img.shields.io/badge/Vue-3.x-4FC08D?style=flat-square&logo=vue.js)](https://vuejs.org/)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
-[![Build](https://img.shields.io/github/actions/workflow/status/yourname/seekyourguild/build.yml?style=flat-square)](https://github.com/yourname/seekyourguild/actions)
+[![Build](https://img.shields.io/github/actions/workflow/status/HuanLinOTO/SeekYourGuild/build.yml?style=flat-square)](https://github.com/HuanLinOTO/SeekYourGuild/actions)
 
 [功能特性](#-功能特性) • [快速开始](#-快速开始) • [部署指南](#-部署指南) • [API 文档](#-api-文档) • [开发指南](#-开发指南)
 
@@ -50,8 +50,8 @@
 
 ```bash
 # 克隆项目
-git clone https://github.com/yourname/seekyourguild.git
-cd seekyourguild
+git clone https://github.com/HuanLinOTO/SeekYourGuild.git
+cd SeekYourGuild
 
 # 配置环境变量
 cp .env.example .env
