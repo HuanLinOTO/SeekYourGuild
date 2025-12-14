@@ -41,11 +41,22 @@ export const useStatsStore = defineStore('stats', () => {
         }
     }
 
-    // 获取成员变动
+    // 获取成员变动（默认获取最近7天）
     async function fetchMemberChanges(params = {}) {
         loading.value.memberChanges = true
         try {
-            const data = await statsApi.getMemberChanges(groupId.value, params)
+            // 默认获取最近7天的数据
+            const today = new Date()
+            const startDate = new Date(today)
+            startDate.setDate(startDate.getDate() - 6)
+            
+            const defaultParams = {
+                start_date: startDate.toISOString().split('T')[0],
+                end_date: today.toISOString().split('T')[0],
+                page_size: 7
+            }
+            
+            const data = await statsApi.getMemberChanges(groupId.value, { ...defaultParams, ...params })
             memberChanges.value = data.items || []
         } catch (e) {
             console.error('Failed to fetch member changes:', e)

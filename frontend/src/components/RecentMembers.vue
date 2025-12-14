@@ -1,5 +1,5 @@
 <template>
-  <div class="card p-6">
+  <div class="card p-6 min-h-[280px]">
     <h3 class="text-dark-400 text-sm uppercase tracking-wider mb-4">
       最新入群成员
     </h3>
@@ -7,10 +7,10 @@
     <!-- 骨架屏 -->
     <template v-if="loading">
       <div class="space-y-3">
-        <div v-for="i in 5" :key="i" class="flex items-center gap-3">
+        <div v-for="i in 5" :key="i" class="flex items-center gap-3 p-2">
           <div class="skeleton w-10 h-10 rounded-full"></div>
           <div class="flex-1">
-            <div class="skeleton h-4 w-24 rounded mb-1"></div>
+            <div class="skeleton h-4 w-24 rounded mb-2"></div>
             <div class="skeleton h-3 w-16 rounded"></div>
           </div>
         </div>

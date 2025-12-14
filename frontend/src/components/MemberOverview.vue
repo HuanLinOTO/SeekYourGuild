@@ -1,11 +1,20 @@
 <template>
-  <div class="card p-6 h-full">
+  <div class="card p-6 h-full min-h-[420px]">
     <!-- 骨架屏 -->
     <template v-if="loading">
       <div class="space-y-6">
-        <div class="skeleton h-8 w-32 rounded"></div>
-        <div class="skeleton h-24 w-full rounded-lg"></div>
-        <div class="skeleton h-4 w-48 rounded"></div>
+        <div class="skeleton h-5 w-32 rounded"></div>
+        <div class="flex justify-center">
+          <div class="skeleton h-24 w-48 rounded-lg"></div>
+        </div>
+        <div class="skeleton h-4 w-24 mx-auto rounded"></div>
+        <div class="flex justify-center">
+          <div class="skeleton h-48 w-48 rounded-full"></div>
+        </div>
+        <div class="flex justify-between">
+          <div class="skeleton h-12 w-20 rounded"></div>
+          <div class="skeleton h-12 w-20 rounded"></div>
+        </div>
       </div>
     </template>
 

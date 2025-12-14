@@ -1,18 +1,39 @@
 <template>
-  <div class="card p-6">
+  <div class="card p-6 min-h-[340px]">
     <h3 class="text-dark-400 text-sm uppercase tracking-wider mb-6">
       24小时消息分布
     </h3>
 
     <!-- 骨架屏 -->
     <template v-if="loading">
-      <div class="flex items-end gap-1 h-40">
+      <div class="flex items-end gap-1 h-40 mb-4">
         <div 
           v-for="i in 24" 
           :key="i" 
           class="skeleton flex-1 rounded-t"
-          :style="{ height: `${Math.random() * 80 + 20}%` }"
+          :style="{ height: `${20 + (i % 5) * 15}%` }"
         ></div>
+      </div>
+      <div class="flex justify-between mb-6">
+        <div class="skeleton h-4 w-12 rounded"></div>
+        <div class="skeleton h-4 w-12 rounded"></div>
+        <div class="skeleton h-4 w-12 rounded"></div>
+        <div class="skeleton h-4 w-12 rounded"></div>
+        <div class="skeleton h-4 w-16 rounded"></div>
+      </div>
+      <div class="border-t border-dark-700 pt-6 grid grid-cols-3 gap-4">
+        <div class="text-center">
+          <div class="skeleton h-8 w-16 mx-auto rounded mb-1"></div>
+          <div class="skeleton h-3 w-12 mx-auto rounded"></div>
+        </div>
+        <div class="text-center">
+          <div class="skeleton h-8 w-16 mx-auto rounded mb-1"></div>
+          <div class="skeleton h-3 w-12 mx-auto rounded"></div>
+        </div>
+        <div class="text-center">
+          <div class="skeleton h-8 w-16 mx-auto rounded mb-1"></div>
+          <div class="skeleton h-3 w-12 mx-auto rounded"></div>
+        </div>
       </div>
     </template>
 
